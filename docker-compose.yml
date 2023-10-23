@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    container_name: app
+    ports:
+      - '8000:3000'
+    volumes:
+      - ./:/app
+
+  browser:
+    image: browserless/chrome:latest
+    container_name: browser
+    restart: always
+    ports:
+      # For accessing the debugger
+      - '8080:3000'
+    environment:
+      - MAX_CONCURRENT_SESSIONS=10
+      - CONNECTION_TIMEOUT=60000
+      - WORKSPACE_DELETE_EXPIRED=true
+      - WORKSPACE_EXPIRE_DAYS=1
+      - DEFAULT_BLOCK_ADS=true
+      - DEFAULT_STEALTH=true
+      - DEFAULT_HEADLESS=false
+      - DEFAULT_LAUNCH_ARGS=["--window-size=1920,1080"]
+      - DEFAULT_USER_DATA_DIR=/tmp/my-profile
+
+  # For later, once they figure out their self-hosting
+  # inngest:
+  #   image: inngest/inngest:latest
+  #   container_name: inngest
+  #   restart: always
+  #   command: inngest serve runner executor event-api core-api
