@@ -17,8 +17,6 @@ test.describe('Twitter', () => {
 
 		await page.waitForSelector('[data-testid="tweet"]');
 
-		let tweetContents = [];
-
 		await page.locator('[role=progressbar] svg').waitFor({ state: 'hidden' }); // Wait a bit for new tweets to load
 		// TODO: use [aria-labelledby="accessible-list-1"] for just tweets, no header, footer, sidebar, etc.
 		// Doing it now causes a bunch of black bars to show up in the screenshot. Virtualization maybe?
@@ -44,21 +42,7 @@ test.describe('Twitter', () => {
 			await page.screenshot({
 				path: `screenshots/twitter-${i + 1}.png`
 			});
-
-			const tweets = page.getByTestId('tweet');
-			// TODO: rank and prioritize these somehow
-			const usernames = (
-				await tweets.getByTestId('User-Name').locator('span').getByText(/^@/gi).all()
-			)
-				.filter((el) => el.isVisible())
-				.map((el) => el.textContent());
-			tweetContents = tweetContents.concat(
-				(await Promise.all((await tweets.all()).map((tweet) => tweet.textContent()))).filter(
-					(tweet) => tweet != null
-				)
-			);
 		}
-		tweetContents = new Set(tweetContents);
 
 		stitchImages(
 			Array.from({ length: NUM_TIMES_TO_SCROLL + 1 }, (_, i) => `screenshots/twitter-${i}.png`),
@@ -66,9 +50,6 @@ test.describe('Twitter', () => {
 		);
 
 		// await page.pause();
-
-		console.log(tweetContents.size);
-		console.log(Array.from(tweetContents));
 
 		// TODO: show more on tweets using [data-testid="tweet"] span "show more"
 		// TODO: filter out ads
