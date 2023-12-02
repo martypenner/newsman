@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 
 const openai = new OpenAI();
 
-async function main() {
+export async function extractTweets() {
 	console.log('Running...');
 
 	const response = await openai.chat.completions.create({
@@ -116,8 +116,6 @@ This is the JSON schema you need to adhere to when asked:
 		console.error(`Could not parse JSON from payload:`, response.choices[0].message.content);
 	}
 }
-
-main();
 
 function encodeImageToBase64(filePath: string): string {
 	try {
