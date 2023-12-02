@@ -82,7 +82,7 @@ This is the JSON schema you need to adhere to when asked:
 				content: [
 					{
 						type: 'text',
-						text: 'Extract the posts from this image. Adhere to the provided JSON schema. Identify ads as best as you can. Do not output surrounding markdown markers. Output only JSON, with no surrounding context about your decisions.'
+						text: 'Extract the relevant tech news from this image.'
 					},
 					{
 						type: 'image_url',
@@ -96,17 +96,22 @@ This is the JSON schema you need to adhere to when asked:
 		]
 	});
 
+	if (response.choices[0].message.content == null) {
+		throw new Error(`Couldn't get a response.`);
+	}
+
 	try {
-		let content = response.choices[0].message.content
+		const content = response.choices[0].message.content
 			.replace(/^```json/i, '')
 			.replace(/^```/i, '')
 			.replace(/```$/i, '');
-		if (content.slice(0, 1) !== '[') {
-			content = `[${content}]`;
-		}
+		// For JSON mode
+		// if (content.slice(0, 1) !== '[') {
+		// 	content = `[${content}]`;
+		// }
 		console.log(content);
-		const parsed = JSON.parse(content);
-		console.log(parsed);
+		// const parsed = JSON.parse(content);
+		// console.log(parsed);
 	} catch (error) {
 		console.error(`Could not parse JSON from payload:`, response.choices[0].message.content);
 	}
