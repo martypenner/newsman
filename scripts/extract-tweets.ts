@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 const openai = new OpenAI();
 
 export async function extractTweets() {
-	console.log('Running...');
+	console.log('Extracting tweets...');
 
 	const response = await openai.chat.completions.create({
 		model: 'gpt-4-vision-preview',
@@ -109,11 +109,16 @@ This is the JSON schema you need to adhere to when asked:
 		// if (content.slice(0, 1) !== '[') {
 		// 	content = `[${content}]`;
 		// }
+
 		console.log(content);
+
 		// const parsed = JSON.parse(content);
 		// console.log(parsed);
+
+		return content;
 	} catch (error) {
 		console.error(`Could not parse JSON from payload:`, response.choices[0].message.content);
+		return null;
 	}
 }
 

@@ -6,6 +6,7 @@ const authFile = '.auth/twitter.json';
 test.describe('Twitter', () => {
 	test('should log in', async ({ page }) => {
 		const NUM_TIMES_TO_SCROLL = 5;
+		const screenshots: Buffer[] = [];
 
 		await page.goto('https://twitter.com/');
 
@@ -20,9 +21,7 @@ test.describe('Twitter', () => {
 		await page.locator('[role=progressbar] svg').waitFor({ state: 'hidden' }); // Wait a bit for new tweets to load
 		// TODO: use [aria-labelledby="accessible-list-1"] for just tweets, no header, footer, sidebar, etc.
 		// Doing it now causes a bunch of black bars to show up in the screenshot. Virtualization maybe?
-		await page.screenshot({
-			path: `screenshots/twitter-0.png`
-		});
+		screenshots.push(await page.screenshot());
 
 		// Scroll through the timeline
 		let previousHeight = 0;
@@ -39,15 +38,10 @@ test.describe('Twitter', () => {
 			previousHeight = currentHeight;
 			await page.locator('[role=progressbar] svg').waitFor({ state: 'hidden' }); // Wait a bit for new tweets to load
 
-			await page.screenshot({
-				path: `screenshots/twitter-${i + 1}.png`
-			});
+			screenshots.push(await page.screenshot());
 		}
 
-		stitchImages(
-			Array.from({ length: NUM_TIMES_TO_SCROLL + 1 }, (_, i) => `screenshots/twitter-${i}.png`),
-			'screenshots/twitter-full.png'
-		);
+		stitchImages(screenshots);
 
 		// await page.pause();
 
@@ -68,12 +62,12 @@ async function login(page: Page) {
 	await page.getByTestId('LoginForm_Login_Button').click();
 }
 
-async function stitchImages(imagePaths: string[], outputPath: string): Promise<void> {
+async function stitchImages(imagePaths: Buffer[]) {
 	const images = await Promise.all(
-		imagePaths.map((path) =>
-			sharp(path)
+		imagePaths.map((buffer) =>
+			sharp(buffer)
 				.metadata()
-				.then((metadata) => ({ path, metadata }))
+				.then((metadata) => ({ buffer, metadata }))
 		)
 	);
 
@@ -91,9 +85,9 @@ async function stitchImages(imagePaths: string[], outputPath: string): Promise<v
 
 	let y = 0;
 	output.composite(
-		images.map(({ path, metadata }, i) => {
+		images.map(({ buffer, metadata }) => {
 			const image = {
-				input: path,
+				input: buffer,
 				top: y,
 				left: 0
 			};
@@ -103,5 +97,5 @@ async function stitchImages(imagePaths: string[], outputPath: string): Promise<v
 		})
 	);
 
-	await output.toFile(outputPath);
+	return await output.toFile('./screenshots/twitter-full.png');
 }
