@@ -38,6 +38,7 @@
   "dependencies": {
     "@playwright/browser-chromium": "^1.39.0",
     "inngest": "^3.3.0",
+    "openai": "^4.20.1",
     "playwright": "^1.39.0",
     "puppeteer": "^21.4.0",
     "sharp": "^0.32.6"
