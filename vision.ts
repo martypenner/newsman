@@ -8,6 +8,8 @@ async function main() {
 
 	const response = await openai.chat.completions.create({
 		model: 'gpt-4-vision-preview',
+		seed: 42,
+		temperature: 0,
 		max_tokens: 4096,
 		messages: [
 			{
