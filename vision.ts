@@ -66,7 +66,7 @@ This is the JSON schema you need to adhere to when asked:
 						type: 'image_url',
 						image_url: {
 							detail: 'high',
-							url: `data:image/jpeg;base64,${encodeImageToBase64('./screenshots/twitter-full.png')}`
+							url: `data:image/png;base64,${encodeImageToBase64('./screenshots/twitter-full.png')}`
 						}
 					}
 				]
