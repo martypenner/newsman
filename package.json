@@ -3,7 +3,8 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "concurrently -n 'sveltekit,inngest' 'vite dev' 'inngest-cli dev -u http://localhost:5173/api/inngest'",
+		"dev": "vite dev",
+		"inngest": "inngest-cli dev -u http://localhost:5173/api/inngest",
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "pnpm run test:integration && npm run test:unit",
@@ -12,8 +13,7 @@
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
 		"test:integration": "playwright test",
-		"test:unit": "vitest",
-		"get-news": "tsx -r dotenv/config scripts/get-news.ts"
+		"test:unit": "vitest"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.40.1",
