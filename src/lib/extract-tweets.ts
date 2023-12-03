@@ -6,8 +6,6 @@ const openai = new OpenAI({
 });
 
 export async function extractTweets(screenshot: Buffer) {
-	console.log('Extracting tweets...');
-
 	const response = await openai.chat.completions.create({
 		model: 'gpt-4-vision-preview',
 		seed: 42,

@@ -16,16 +16,25 @@ export const functions = [
 	inngest.createFunction(
 		{ id: 'get-news' },
 		{ cron: 'TZ=America/Toronto 0 16 * * *' },
-		async ({ step }) => {
-			const screenshot = await step.run('get-screenshots', async () => await getScreenshots());
-			console.log(screenshot);
-			// const content = await step.run('extract-tweets', async () => await extractTweets(screenshot));
+		async ({ step, logger }) => {
+			const screenshot = await step.run('get-screenshots', async () => {
+				const screenshot = await getScreenshots();
+				logger.info('Screenshot:', screenshot);
+				return screenshot;
+			});
+			// const content = await step.run('extract-tweets', async () => {
+			// logger.info('Extracting tweets...');
+			// return await extractTweets(screenshot);
+			// });
 			//
 			// if (content != null && !content.startsWith(`I'm sorry`)) {
-			// 	await step.run('send-email-summary', async () => await sendEmailSummary(content));
+			// 	await step.run('send-email-summary', async () => {
+			// 	logger.info('Sending email summary...')
+			//await sendEmailSummary(content)
+			// 	});
 			// }
 
-			console.log('Done!');
+			logger.info('Done!');
 		}
 	)
 ];
