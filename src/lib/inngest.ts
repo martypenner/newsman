@@ -21,15 +21,17 @@ export const functions = [
 				const screenshot = await getScreenshots();
 				return screenshot;
 			});
+			logger.info(screenshot);
 			const content = await step.run('extract-tweets', async () => {
 				logger.info('Extracting tweets...');
-				return await extractTweets(screenshot);
+				return await extractTweets(Buffer.from(screenshot.data));
 			});
+			logger.info(content);
 
-			if (content != null && !content.startsWith(`I'm sorry`)) {
+			if (content.data != null && !content.data.startsWith(`I'm sorry`)) {
 				await step.run('send-email-summary', async () => {
 					logger.info('Sending email summary...');
-					await sendEmailSummary(content);
+					await sendEmailSummary(content.data);
 				});
 			}
 
