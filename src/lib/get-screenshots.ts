@@ -4,7 +4,7 @@ import sharp from 'sharp';
 const authFile = '.auth/twitter.json';
 
 export async function getScreenshots() {
-	const browser = await chromium.launch({ headless: false });
+	const browser = await chromium.launch({ headless: true });
 	const page = await browser.newPage({ storageState: authFile });
 
 	const NUM_TIMES_TO_SCROLL = 5;
