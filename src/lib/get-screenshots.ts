@@ -1,5 +1,5 @@
 import { type Page, chromium } from 'playwright';
-import sharp from 'sharp';
+import Jimp from 'jimp';
 
 const authFile = '.auth/twitter.json';
 
@@ -53,7 +53,9 @@ export async function getScreenshots() {
 	await page.context().storageState({ path: authFile });
 	await browser.close();
 
-	return await stitchImages(screenshots);
+	const fullScreenshot = await stitchImages(screenshots);
+
+	return fullScreenshot;
 }
 
 async function login(page: Page) {
@@ -64,40 +66,18 @@ async function login(page: Page) {
 	await page.getByTestId('LoginForm_Login_Button').click();
 }
 
-async function stitchImages(imagePaths: Buffer[]) {
-	const images = await Promise.all(
-		imagePaths.map((buffer) =>
-			sharp(buffer)
-				.metadata()
-				.then((metadata) => ({ buffer, metadata }))
-		)
-	);
+async function stitchImages(imagesData: Buffer[]) {
+	const images = await Promise.all(imagesData.map((path) => Jimp.read(path)));
+	const totalHeight = images.reduce((sum, img) => sum + img.bitmap.height, 0);
+	const maxWidth = Math.max(...images.map((img) => img.bitmap.width));
 
-	const totalHeight = images.reduce((sum, { metadata }) => sum + (metadata?.height ?? 0), 0);
-	const maxWidth = Math.max(...images.map(({ metadata }) => metadata.width ?? 0));
+	const stitchedImg = new Jimp(maxWidth, totalHeight);
 
-	const output = sharp({
-		create: {
-			width: maxWidth,
-			height: totalHeight,
-			channels: 4,
-			background: { r: 0, g: 0, b: 0, alpha: 0 }
-		}
-	});
+	let yOffset = 0;
+	for (const image of images) {
+		stitchedImg.blit(image, 0, yOffset);
+		yOffset += image.bitmap.height;
+	}
 
-	let y = 0;
-	output.composite(
-		images.map(({ buffer, metadata }) => {
-			const image = {
-				input: buffer,
-				top: y,
-				left: 0
-			};
-			y += metadata.height ?? 0;
-
-			return image;
-		})
-	);
-
-	return await output.png().toBuffer();
+	return await stitchedImg.getBufferAsync('image/png');
 }
