@@ -1,17 +1,13 @@
 import { extractTweets } from './extract-tweets';
+import { getScreenshots } from './get-screenshots';
 import { sendEmail } from './send-email';
 import { exec } from 'child_process';
 
 // TODO: use inngest
 
 (async function run() {
-	try {
-		await executeCommand('pnpm run test:integration');
-	} catch (error) {
-		// no-op
-	}
-
-	const content = await extractTweets();
+	const screenshot = await getScreenshots();
+	const content = await extractTweets(screenshot);
 	if (content != null && !content.startsWith(`I'm sorry`)) {
 		await sendEmail(content);
 	}

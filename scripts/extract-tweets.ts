@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 
 const openai = new OpenAI();
 
-export async function extractTweets() {
+export async function extractTweets(screenshot: Buffer) {
 	console.log('Extracting tweets...');
 
 	const response = await openai.chat.completions.create({
@@ -88,7 +88,7 @@ This is the JSON schema you need to adhere to when asked:
 						type: 'image_url',
 						image_url: {
 							detail: 'high',
-							url: `data:image/png;base64,${encodeImageToBase64('./screenshots/twitter-full.png')}`
+							url: `data:image/png;base64,${screenshot.toString('base64')}`
 						}
 					}
 				]
