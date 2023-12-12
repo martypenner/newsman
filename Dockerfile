@@ -20,6 +20,10 @@ RUN pnpm install && \
 	# Clean up pnpm cache (though it's usually shared)
 	pnpm store prune
 
+USER root
+RUN pnpm playwright install --with-deps chromium
+USER node
+
 # Copy local code to the container
 COPY --chown=node:node . .
 
