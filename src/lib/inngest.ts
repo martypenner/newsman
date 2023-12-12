@@ -15,7 +15,7 @@ export const inngest = new Inngest({
 export const functions = [
 	inngest.createFunction(
 		{ id: 'get-news' },
-		{ cron: 'TZ=America/Toronto 0 16 * * *' },
+		{ cron: 'TZ=America/Toronto 0 9,21 * * *' },
 		async ({ step, logger }) => {
 			const screenshot = await step.run('get-screenshots', async () => {
 				const screenshot = await getScreenshots();
