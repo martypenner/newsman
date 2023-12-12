@@ -61,9 +61,6 @@ export async function getScreenshots() {
 async function login(page: Page) {
 	await page.getByTestId('loginButton').click();
 	await page.pause();
-	await page.getByRole('button', { name: 'Next' }).click();
-	await page.pause();
-	await page.getByTestId('LoginForm_Login_Button').click();
 }
 
 async function stitchImages(imagesData: Buffer[]) {
