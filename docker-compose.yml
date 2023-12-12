@@ -9,17 +9,17 @@ services:
     volumes:
       - ./:/app
 
-  browser:
-    image: ghcr.io/browserless/chrome:latest
-    container_name: browser
-    restart: always
-    ports:
-      # For accessing the debugger
-      - '8080:3000'
-    environment:
-      - CONCURRENT=10
-      - TIMEOUT=60000
-      - DATA_DIR=/tmp/my-profile
+  # browser:
+  #   image: ghcr.io/browserless/chrome:latest
+  #   container_name: browser
+  #   restart: always
+  #   ports:
+  #     # For accessing the debugger
+  #     - '8080:3000'
+  #   environment:
+  #     - CONCURRENT=10
+  #     - TIMEOUT=60000
+  #     - DATA_DIR=/tmp/my-profile
 
   # For later, once they figure out their self-hosting
   # inngest:
