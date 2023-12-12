@@ -1,3 +1,5 @@
+# syntax = docker/dockerfile:1
+
 # Use the official Node 18 image as a base
 FROM node:18
 
@@ -13,7 +15,7 @@ RUN chown node:node /app
 USER node
 
 # Copy pnpm's lock file and json
-COPY --chown=node:node pnpm-lock.yaml package.json ./
+COPY --link --chown=node:node pnpm-lock.yaml package.json ./
 
 # Install SvelteKit and other project dependencies using pnpm
 RUN pnpm install && \
@@ -21,11 +23,11 @@ RUN pnpm install && \
 	pnpm store prune
 
 USER root
-RUN pnpm playwright install --with-deps chromium
+RUN pnpm playwright install-deps
 USER node
 
 # Copy local code to the container
-COPY --chown=node:node . .
+COPY --link --chown=node:node . .
 
 # Build the SvelteKit app using pnpm
 RUN pnpm run build
