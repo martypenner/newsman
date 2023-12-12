@@ -43,6 +43,8 @@ export async function getScreenshots() {
 		screenshots.push(await page.screenshot());
 	}
 
+	// TODO: use pdf for better screenshot maybe?
+
 	// await page.pause();
 
 	// TODO: show more on tweets using [data-testid="tweet"] span "show more"
