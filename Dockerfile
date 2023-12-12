@@ -27,4 +27,4 @@ COPY --chown=node:node . .
 RUN pnpm run build
 
 # Start the SvelteKit app
-CMD ["pnpm", "start"]
+CMD ["node", "build"]
