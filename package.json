@@ -13,7 +13,8 @@
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
 		"test:integration": "playwright test",
-		"test:unit": "vitest"
+		"test:unit": "vitest",
+		"deploy": "fly deploy && curl -X PUT https://newsman.fly.dev/api/inngest"
 	},
 	"devDependencies": {
 		"@playwright/browser-chromium": "^1.40.1",
