@@ -3,9 +3,14 @@
 // log in to things.
 
 import { chromium } from 'playwright';
+import { config } from 'dotenv';
+
+config();
 
 (async () => {
-	const browserServer = await chromium.launchServer();
+	const browserServer = await chromium.launchServer({
+		port: process.env.BROWSER_PORT
+	});
 	const wsEndpoint = browserServer.wsEndpoint();
 	console.log(wsEndpoint);
 })();
