@@ -9,7 +9,8 @@ config();
 
 (async () => {
 	const browserServer = await chromium.launchServer({
-		port: process.env.BROWSER_PORT
+		port: process.env.BROWSER_PORT,
+		headless: false
 	});
 	const wsEndpoint = browserServer.wsEndpoint();
 	console.log(wsEndpoint);
