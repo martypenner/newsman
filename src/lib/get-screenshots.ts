@@ -7,7 +7,7 @@ export async function getScreenshots() {
 	const shouldConnect = import.meta.env.VITE_WS_ENDPOINT != null;
 	const browser = shouldConnect
 		? await chromium.connect(import.meta.env.VITE_WS_ENDPOINT)
-		: await chromium.launch({ headless: false });
+		: await chromium.launch({ headless: import.meta.env.PROD });
 	const page = await browser.newPage({ storageState: authFile });
 
 	const NUM_TIMES_TO_SCROLL = 5;
