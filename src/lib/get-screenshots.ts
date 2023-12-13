@@ -4,7 +4,10 @@ import Jimp from 'jimp';
 const authFile = '.auth/twitter.json';
 
 export async function getScreenshots() {
-	const browser = await chromium.launch({ headless: true });
+	const shouldConnect = import.meta.env.VITE_WS_ENDPOINT != null;
+	const browser = shouldConnect
+		? await chromium.connect(import.meta.env.VITE_WS_ENDPOINT)
+		: await chromium.launch({ headless: false });
 	const page = await browser.newPage({ storageState: authFile });
 
 	const NUM_TIMES_TO_SCROLL = 5;
