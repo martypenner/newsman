@@ -20,15 +20,15 @@ app.listen(PORT, HOST, () => {
 process.on('SIGINT', exit);
 process.on('SIGTERM', exit);
 
-function timer(_, __, next) {
-	console.log('request');
+function timer(req, __, next) {
+	console.log('Request:', req.url);
 	clearTimeout(timeout);
 	timeout = setTimeout(exit, TIMEOUT);
 	next();
 }
 
 function exit() {
-	console.log('exiting...');
+	console.log('Exiting after timeout...');
 	clearTimeout(timeout);
 	app.server.closeAllConnections();
 	app.server.close();
