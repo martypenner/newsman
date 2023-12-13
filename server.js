@@ -28,7 +28,7 @@ function timer(req, __, next) {
 }
 
 function exit() {
-	console.log('Exiting after timeout...');
+	console.log('Exiting...');
 	clearTimeout(timeout);
 	app.server.closeAllConnections();
 	app.server.close();
