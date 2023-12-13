@@ -7,6 +7,10 @@ app = "newsman"
 primary_region = "ewr"
 swap_size_mb = 2048
 
+[mounts]
+source = "newsman_data"
+destination = "/app/.auth"
+
 [build]
 
 [http_service]
