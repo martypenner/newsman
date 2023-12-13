@@ -1,7 +1,8 @@
 import { handler } from './build/handler.js';
 import polka from 'polka';
 
-const PORT = process.env.PORT ?? 3000;
+const PORT = 3000;
+const HOST = '0.0.0.0';
 const TIMEOUT = 1_000 * 60 * 15; // 15 minutes
 
 let timeout;
@@ -11,7 +12,7 @@ const app = polka();
 // let SvelteKit handle everything, including serving prerendered pages and static assets
 app.use(timer, handler);
 
-app.listen(PORT, () => {
+app.listen(PORT, HOST, () => {
 	console.log(`> Running on port ${PORT}`);
 	timeout = setTimeout(exit, TIMEOUT);
 });
