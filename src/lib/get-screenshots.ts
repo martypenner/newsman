@@ -2,6 +2,7 @@ import { type Page, chromium } from 'playwright';
 import Jimp from 'jimp';
 
 const authFile = '.auth/twitter.json';
+const tweetLoadingIndicator = '[role=progressbar] svg';
 
 export async function getScreenshots() {
 	const shouldConnect = import.meta.env.VITE_WS_ENDPOINT != null;
@@ -23,9 +24,14 @@ export async function getScreenshots() {
 
 	await page.waitForSelector('[data-testid="tweet"]');
 
-	await page.locator('[role=progressbar] svg').waitFor({ state: 'hidden' }); // Wait a bit for new tweets to load
+	await page
+		.getByLabel(/Timeline: Your Home Timeline/gi)
+		.locator(tweetLoadingIndicator)
+		.filter({ has: page.getByTestId('tweetPhoto') })
+		.waitFor({ state: 'hidden' }); // Wait a bit for new tweets to load
 	// TODO: use [aria-labelledby="accessible-list-1"] for just tweets, no header, footer, sidebar, etc.
 	// Doing it now causes a bunch of black bars to show up in the screenshot. Virtualization maybe?
+	// Note that a pdf doesn't fare any better.
 	screenshots.push(await page.screenshot());
 
 	// Scroll through the timeline
@@ -36,17 +42,20 @@ export async function getScreenshots() {
 			return document.body.scrollHeight;
 		});
 
+		// TODO: don't scroll page height; scroll visible amount.
 		if (currentHeight === previousHeight) {
 			break; // Stop scrolling if the scroll height didn't change
 		}
 
 		previousHeight = currentHeight;
-		await page.locator('[role=progressbar] svg').waitFor({ state: 'hidden' }); // Wait a bit for new tweets to load
+		await page
+			.getByLabel(/Timeline: Your Home Timeline/gi)
+			.locator(tweetLoadingIndicator)
+			.filter({ has: page.getByTestId('tweetPhoto') })
+			.waitFor({ state: 'hidden' }); // Wait a bit for new tweets to load
 
 		screenshots.push(await page.screenshot());
 	}
-
-	// TODO: use pdf for better screenshot maybe?
 
 	// await page.pause();
 
