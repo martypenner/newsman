@@ -81,5 +81,8 @@ async function stitchImages(imagesData: Buffer[]) {
 		yOffset += image.bitmap.height;
 	}
 
+	// For debugging
+	await stitchedImg.writeAsync('screenshots/debug.png');
+
 	return await stitchedImg.getBufferAsync('image/png');
 }
