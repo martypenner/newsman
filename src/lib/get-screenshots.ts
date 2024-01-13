@@ -5,10 +5,10 @@ const authFile = '.auth/twitter.json';
 const tweetLoadingIndicator = '[role=progressbar] svg';
 
 export async function getScreenshots() {
-	const shouldConnect = import.meta.env.VITE_WS_ENDPOINT != null;
+	const shouldConnect = process.env.WS_ENDPOINT != null;
 	const browser = shouldConnect
-		? await chromium.connect(import.meta.env.VITE_WS_ENDPOINT)
-		: await chromium.launch({ headless: import.meta.env.PROD });
+		? await chromium.connect(process.env.WS_ENDPOINT)
+		: await chromium.launch({ headless: process.env.NODE_ENV === 'PROD' });
 	const page = await browser.newPage({ storageState: authFile });
 
 	const NUM_TIMES_TO_SCROLL = 5;

@@ -20,10 +20,3 @@ services:
   #     - CONCURRENT=10
   #     - TIMEOUT=60000
   #     - DATA_DIR=/tmp/my-profile
-
-  # For later, once they figure out their self-hosting
-  # inngest:
-  #   image: inngest/inngest:latest
-  #   container_name: inngest
-  #   restart: always
-  #   command: inngest serve runner executor event-api core-api

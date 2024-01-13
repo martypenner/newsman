@@ -9,4 +9,13 @@ declare global {
 	}
 }
 
+declare module '$env/static/private' {
+	export const OPENAI_API_KEY: string;
+	export const RESEND_API_KEY: string;
+	export const EMAIL_FROM: string;
+	export const EMAIL_TO: string;
+	export const WS_ENDPOINT: string;
+	export const BROWSER_PORT: number;
+}
+
 export {};
