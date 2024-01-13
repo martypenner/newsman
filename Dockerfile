@@ -29,8 +29,5 @@ USER node
 # Copy local code to the container
 COPY --link --chown=node:node . .
 
-# Build the SvelteKit app using pnpm
-RUN pnpm run build
-
 # Start the SvelteKit app
-CMD ["node", "server.js"]
+CMD ["npm", "run", "get-news"]

@@ -3,6 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
+		"get-news": "tsx -r dotenv/config src/lib/pipeline.ts",
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "node server.js",
@@ -13,7 +14,7 @@
 		"format": "prettier --plugin-search-dir . --write .",
 		"test:integration": "playwright test",
 		"test:unit": "vitest",
-		"deploy": "fly deploy && curl -X PUT https://newsman.fly.dev/api/inngest"
+		"deploy": "railway up"
 	},
 	"devDependencies": {
 		"@playwright/browser-chromium": "^1.40.1",
@@ -46,6 +47,7 @@
 		"openai": "^4.24.7",
 		"playwright": "^1.40.1",
 		"polka": "^0.5.2",
-		"resend": "^2.1.0"
+		"resend": "^2.1.0",
+		"tsx": "^4.7.0"
 	}
 }
