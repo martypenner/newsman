@@ -30,4 +30,4 @@ USER node
 COPY --link --chown=node:node . .
 
 # Start the SvelteKit app
-CMD ["npm", "run", "get-news"]
+CMD ["npm", "run", "start"]

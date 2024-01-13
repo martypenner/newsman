@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"get-news": "tsx -r dotenv/config src/lib/pipeline.ts",
+		"start": "tsx -r dotenv/config src/lib/pipeline.ts",
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "node server.js",
