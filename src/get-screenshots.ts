@@ -43,9 +43,6 @@ export async function getScreenshots() {
 		});
 
 		// TODO: don't scroll page height; scroll visible amount.
-		if (currentHeight === previousHeight) {
-			break; // Stop scrolling if the scroll height didn't change
-		}
 
 		previousHeight = currentHeight;
 		await page
