@@ -23,7 +23,7 @@ RUN pnpm install && \
 	pnpm store prune
 
 USER root
-RUN pnpm playwright install-deps chromium
+RUN pnpm playwright install-deps chromium && pnpm playwright install
 USER node
 
 # Copy local code to the container
